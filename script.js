@@ -69,6 +69,10 @@ class Patrat {
 
 var patrat = new Patrat();
 var resetbt;
+let playerInput;
+let playerName;
+let playerName2;
+let playerInput2;
 function setup() {
 	//functie care initializeaza patratul
 	createCanvas(canvasWidth, canvasHeight);
@@ -78,6 +82,21 @@ function setup() {
 	resetbt.size(60, 25);
 	resetbt.mousePressed(reset);
 	resetbt.style("background-color", "lightgrey");
+
+				playerInput2 = createInput();
+				playerInput2.position(400, 380);
+
+				let adddButton = createButton("Add name");
+				adddButton.position(400, 410);
+				adddButton.mousePressed(addName2);
+
+				playerInput = createInput();
+				playerInput.position(20, 380);
+			
+				let addButton = createButton("Add name");
+				addButton.position(20, 410);
+				addButton.mousePressed(addName);
+
 }
 function mouseClicked() {
 	//functie care verifica daca butonul a fost apasat
@@ -86,9 +105,35 @@ function mouseClicked() {
 function reset() {
 	//functie care reseteaza patratul
 	patrat.reset();
+	playerName = "";
+  playerInput.value("");
+	playerName2 = "";
+  playerInput2.value("");
+}
+function name() {
+	clear();
+	name1 = "Player One" + inp.value();
+}
+function name2() {
+	clear();
+	name2 = "Player Two" + inp2.value();
+}
+function addName() {
+  playerName = playerInput.value();
+}
+function addName2() {
+  playerName2 = playerInput2.value();
 }
 function draw() {
 	//functie care deseneaza patratul
 	background("lightblue");
 	patrat.afisare(20, 20);
+
+	textSize(32);
+  textAlign(CENTER, CENTER);
+  text(playerName, 140, 415);
+
+	textSize(32);
+  textAlign(CENTER, CENTER);
+	text(playerName2, 550, 415);
 }
