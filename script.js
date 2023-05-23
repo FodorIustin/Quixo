@@ -2,34 +2,26 @@ const length = 5;
 var canvasWidth = window.innerWidth - 10;
 var canvasHeight = window.innerHeight - 10;
 var cubeSize = canvasHeight / 8;
-if (canvasWidth < canvasHeight) cubeSize = canvasWidth / 8;
-var tableHeightSide = (canvasHeight - cubeSize * 5) / 2;
-var tableWidthSide = (canvasWidth - cubeSize * 5) / 2;
+
+//initializarea tablei si a patratelor
 class Patrat {
 	// constructor
-	initializare(patrat = null) {
-		if (patrat) {
-			// daca am primit un patrat
-			this.patrat = patrat; //copiaza patratul
-		} else {
-			// daca nu am primit un patrat
-			this.patrat = []; //initializeaza patratul
-			for (let r = 0; r < length; r++) {
-				//parcurgem patratul
-				this.patrat[r] = []; //initializeaza linia
-				for (let c = 0; c < length; c++) {
-					//parcurgem linia
-					let valueObj = {
-						//initializeaza valoarea
-						value: "0", //initializeaza valoarea
-						color: "white", //initializeaza culoarea
-					};
-					this.patrat[r][c] = valueObj; //adauga valoarea in linia
-				}
+	initializare(patrat) {
+		this.patrat = [];
+		for (let r = 0; r < length; r++) {
+			//parcurgem patratul
+			this.patrat[r] = []; //initializeaza linia
+			for (let c = 0; c < length; c++) {
+				//parcurgem linia
+				let valueObj = {
+					color: "white", //initializeaza culoarea
+				};
+				this.patrat[r][c] = valueObj;
 			}
 		}
 	}
 
+	//partea de afisare, marigini,culori
 	afisare(xInit, y) {
 		//afiseaza patratul
 		let x = xInit;
@@ -63,7 +55,7 @@ class Patrat {
 					my >= 20 + cubeSize * c &&
 					my <= 20 + cubeSize + cubeSize * c
 				)
-					this.patrat[r][c].color = "blue";
+					this.patrat[r][c].color = "green";
 	}
 }
 
@@ -78,24 +70,24 @@ function setup() {
 	createCanvas(canvasWidth, canvasHeight);
 	patrat.initializare();
 	resetbt = createButton("RESET");
-	resetbt.position(440, 20);
-	resetbt.size(60, 25);
+	resetbt.position(550, 20);
+	resetbt.size(100, 40);
 	resetbt.mousePressed(reset);
 	resetbt.style("background-color", "lightgrey");
 
-				playerInput2 = createInput();
-				playerInput2.position(400, 380);
+	playerInput2 = createInput();
+	playerInput2.position(400, 500);
 
-				let adddButton = createButton("Add name");
-				adddButton.position(400, 410);
-				adddButton.mousePressed(addName2);
+	let adddButton = createButton("Add name");
+	adddButton.position(400, 530);
+	adddButton.mousePressed(addName2);
 
-				playerInput = createInput();
-				playerInput.position(20, 380);
-			
-				let addButton = createButton("Add name");
-				addButton.position(20, 410);
-				addButton.mousePressed(addName);
+	playerInput = createInput();
+	playerInput.position(20, 500);
+
+	let addButton = createButton("Add name");
+	addButton.position(20, 530);
+	addButton.mousePressed(addName);
 
 }
 function mouseClicked() {
@@ -106,34 +98,26 @@ function reset() {
 	//functie care reseteaza patratul
 	patrat.reset();
 	playerName = "";
-  playerInput.value("");
+	playerInput.value("");
 	playerName2 = "";
-  playerInput2.value("");
-}
-function name() {
-	clear();
-	name1 = "Player One" + inp.value();
-}
-function name2() {
-	clear();
-	name2 = "Player Two" + inp2.value();
+	playerInput2.value("");
 }
 function addName() {
-  playerName = playerInput.value();
+	playerName = playerInput.value();
 }
 function addName2() {
-  playerName2 = playerInput2.value();
+	playerName2 = playerInput2.value();
 }
 function draw() {
 	//functie care deseneaza patratul
-	background("lightblue");
+	background("lightgreen");
 	patrat.afisare(20, 20);
 
 	textSize(32);
-  textAlign(CENTER, CENTER);
-  text(playerName, 140, 415);
+	textAlign(CENTER, CENTER);
+	text(playerName, 140, 430);
 
 	textSize(32);
-  textAlign(CENTER, CENTER);
-	text(playerName2, 550, 415);
+	textAlign(CENTER, CENTER);
+	text(playerName2, 550, 430);
 }
