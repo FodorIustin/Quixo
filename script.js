@@ -58,7 +58,15 @@ class Patrat {
 					this.patrat[r][c].color = "green";
 	}
 }
+computer() {
+	let r = 1,
+		c = 1;
 
+	while (
+		(r != 0 && r != 4 && c != 0 && c != 4) ||
+		this.patrat[r][c].value == "o"
+	) 
+	}
 var patrat = new Patrat();
 var resetbt;
 let playerInput;
