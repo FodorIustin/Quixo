@@ -193,6 +193,167 @@ computer() {
 		for (let j = 0; j < length; j++)
 			if (this.patrat[i][j].color == "red") this.patrat[i][j].color = "";
 }
+clicked(mousex, mousey) {
+	if (humanOrCopmuter == "computer" && change == "x") this.computer();
+	else {
+		for (let r = 0; r < length; r++)
+			for (let c = 0; c < length; c++)
+				if (
+					mousey >= tableHeightSide + cubeSize * r &&
+					mousey <= tableHeightSide + cubeSize + cubeSize * r &&
+					mousex >= tableWidthSide + cubeSize * c &&
+					mousex <= tableWidthSide + cubeSize + cubeSize * c &&
+					(c < 1 || c > length - 2 || r == 0 || r == length - 1)
+				) {
+					if (this.patrat[r][c].color != "red") {
+						if (check != 6) this.patrat[selectedR][selectedC].value = change;
+						for (let i = 0; i < length; i++)
+							for (let j = 0; j < length; j++)
+								if (this.patrat[i][j].color == "red")
+									this.patrat[i][j].color = "";
+					}
+
+					if (this.patrat[r][c].color == "red") {
+						for (let i = 0; i < length; i++)
+							for (let j = 0; j < length; j++)
+								if (this.patrat[i][j].color == "red")
+									this.patrat[i][j].color = "";
+
+						if (r == 0 && c != 0 && c != 4) {
+							this.patrat[4][c].value = this.patrat[3][c].value;
+							this.patrat[3][c].value = this.patrat[2][c].value;
+							this.patrat[2][c].value = this.patrat[1][c].value;
+							this.patrat[1][c].value = this.patrat[0][c].value;
+						}
+
+						if (r == 4 && c != 0 && c != 4) {
+							this.patrat[0][c].value = this.patrat[1][c].value;
+							this.patrat[1][c].value = this.patrat[2][c].value;
+							this.patrat[2][c].value = this.patrat[3][c].value;
+							this.patrat[3][c].value = this.patrat[4][c].value;
+						}
+
+						if (c == 0 && r != 0 && r != 4) {
+							this.patrat[r][4].value = this.patrat[r][3].value;
+							this.patrat[r][3].value = this.patrat[r][2].value;
+							this.patrat[r][2].value = this.patrat[r][1].value;
+							this.patrat[r][1].value = this.patrat[r][0].value;
+						}
+
+						if (c == 4 && r != 0 && r != 4) {
+							this.patrat[r][0].value = this.patrat[r][1].value;
+							this.patrat[r][1].value = this.patrat[r][2].value;
+							this.patrat[r][2].value = this.patrat[r][3].value;
+							this.patrat[r][3].value = this.patrat[r][4].value;
+						}
+
+						if (r == 0 && c == 0) {
+							if (selectedR == r) {
+								for (let i = selectedC; i > 0; i--)
+									this.patrat[0][i].value = this.patrat[0][i - 1].value;
+							}
+							if (selectedC == c) {
+								for (let i = selectedR; i > 0; i--)
+									this.patrat[i][0].value = this.patrat[i - 1][0].value;
+							}
+						}
+
+						if (r == 0 && c == 4) {
+							if (selectedR == r) {
+								for (let i = selectedC; i < 4; i++)
+									this.patrat[0][i].value = this.patrat[0][i + 1].value;
+							}
+							if (selectedC == c) {
+								for (let i = selectedR; i > 0; i--)
+									this.patrat[i][4].value = this.patrat[i - 1][4].value;
+							}
+						}
+
+						if (r == 4 && c == 4) {
+							if (selectedR == r) {
+								for (let i = selectedC; i < 4; i++)
+									this.patrat[4][i].value = this.patrat[4][i + 1].value;
+							}
+							if (selectedC == c) {
+								for (let i = selectedR; i < 4; i++)
+									this.patrat[i][4].value = this.patrat[i + 1][4].value;
+							}
+						}
+						if (r == 4 && c == 0) {
+							if (selectedR == r) {
+								for (let i = selectedC; i > 0; i--)
+									this.patrat[4][i].value = this.patrat[4][i - 1].value;
+							}
+							if (selectedC == c) {
+								for (let i = selectedR; i < 4; i++)
+									this.patrat[i][0].value = this.patrat[i + 1][0].value;
+							}
+						}
+						this.patrat[r][c].value = change;
+						check = 6;
+						if (change == "o") change = "x";
+						else change = "o";
+					} else if (
+						r == 0 &&
+						(this.patrat[r][c].value == "0" ||
+							this.patrat[r][c].value == change)
+					) {
+						if (this.patrat[r][c].value == change) {
+							this.patrat[r][c].value = "0";
+							check = 1;
+						}
+						selectedC = c;
+						selectedR = r;
+						if (c != 4) this.patrat[r][length - 1].color = "red";
+						this.patrat[length - 1][c].color = "red";
+						if (c != 0) this.patrat[0][0].color = "red";
+					} else if (
+						r == 4 &&
+						(this.patrat[r][c].value == "0" ||
+							this.patrat[r][c].value == change)
+					) {
+						if (this.patrat[r][c].value == change) {
+							this.patrat[r][c].value = "0";
+							check = 1;
+						}
+						selectedC = c;
+						selectedR = r;
+						if (c != 4) this.patrat[4][4].color = "red";
+						this.patrat[0][c].color = "red";
+						if (c != 0) this.patrat[4][0].color = "red";
+					} else if (
+						c == 0 &&
+						(this.patrat[r][c].value == "0" ||
+							this.patrat[r][c].value == change)
+					) {
+						if (this.patrat[r][c].value == change) {
+							this.patrat[r][c].value = "0";
+							check = 1;
+						}
+						selectedC = c;
+						selectedR = r;
+						if (r != 0) this.patrat[0][0].color = "red";
+						this.patrat[r][4].color = "red";
+						if (r != 4) this.patrat[4][0].color = "red";
+					} else if (
+						c == 4 &&
+						(this.patrat[r][c].value == "0" ||
+							this.patrat[r][c].value == change)
+					) {
+						if (this.patrat[r][c].value == change) {
+							this.patrat[r][c].value = "0";
+							check = 1;
+						}
+						selectedC = c;
+						selectedR = r;
+						if (r != 0) this.patrat[0][4].color = "red";
+						this.patrat[r][0].color = "red";
+						if (r != 4) this.patrat[4][4].color = "red";
+					}
+				}
+	}
+}
+
 var patrat = new Patrat();
 var resetbt;
 let playerInput;
