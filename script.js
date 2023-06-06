@@ -25,6 +25,7 @@ class Patrat {
 	afisare(xInit, y) {
 		//afiseaza patratul
 		let x = xInit;
+		
 		for (var r = 0; r < length; r++) {
 			x = xInit;
 			for (var c = 0; c < length; c++) {
@@ -33,9 +34,43 @@ class Patrat {
 				fill(this.patrat[r][c].color);
 				rect(x, y, cubeSize, cubeSize);
 				x += cubeSize;
+				stroke("black");
+				strokeWeight(2);
+				fill("rgb(194,178,128)");
+				if (change == "o") {
+				}
+				if (this.patrat[r][c].color == "red") fill("red");
+				else fill("rgb(194,178,128)");
+				rect(x, y, cubeSize, cubeSize);
+				if (this.patrat[r][c].value == "o") {
+					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 1.4);
+					fill("rgb(194,178,128)");
+					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 1.5);
+					fill("black");
+					circle(x + cubeSize / 2, y + cubeSize / 4, cubeSize / 13);
+					fill("rgb(194,178,128)");
+				}
+				if (this.patrat[r][c].value == "x") {
+					strokeWeight(3);
+					line(
+						x + cubeSize / 6,
+						y + cubeSize / 6,
+						x + cubeSize / 1.15,
+						y + cubeSize / 1.2
+					);
+					line(
+						x + cubeSize / 15,
+						y + cubeSize / 1.2,
+						x + cubeSize / 1.15,
+						y + cubeSize / 6
+					);
+
+				}
+				x += cubeSize;
 			}
 			y += cubeSize;
 		}
+	}
 	}
 	reset() {
 		//reseteaza patratul
