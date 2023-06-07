@@ -92,142 +92,103 @@ class Patrat {
 				)
 					this.patrat[r][c].color = "green";
 	}
-}
 computer() {
-	let r = 1,
-		c = 1;
+  let r = 1, // Initialize row variable
+    c = 1; // Initialize column variable
 
-	while (
-		(r != 0 && r != 4 && c != 0 && c != 4) ||
-		this.patrat[r][c].value == "o"
-	) {
-		r = floor(random(0, 5));
-		c = floor(random(0, 5));
-	}
-	if (
-		r == 0 &&
-		(this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)
-	) {
-		selectedC = c;
-		selectedR = r;
-		if (c != 4) this.patrat[r][length - 1].color = "red";
-		this.patrat[length - 1][c].color = "red";
-		if (c != 0) this.patrat[0][0].color = "red";
-	} else if (
-		r == 4 &&
-		(this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)
-	) {
-		selectedC = c;
-		selectedR = r;
-		if (c != 4) this.patrat[4][4].color = "red";
-		this.patrat[0][c].color = "red";
-		if (c != 0) this.patrat[4][0].color = "red";
-	} else if (
-		c == 0 &&
-		(this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)
-	) {
-		selectedC = c;
-		selectedR = r;
-		if (r != 0) this.patrat[0][0].color = "red";
-		this.patrat[r][4].color = "red";
-		if (r != 4) this.patrat[4][0].color = "red";
-	} else if (
-		c == 4 &&
-		(this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)
-	) {
-		selectedC = c;
-		selectedR = r;
-		if (r != 0) this.patrat[0][4].color = "red";
-		this.patrat[r][0].color = "red";
-		if (r != 4) this.patrat[4][4].color = "red";
-	}
+  // Loop until a valid position is found
+  while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].value == "o") {
+    r = floor(random(0, 5)); // Generate a random row index between 0 and 4
+    c = floor(random(0, 5)); // Generate a random column index between 0 and 4
+  }
 
-	while (
-		(r != 0 && r != 4 && c != 0 && c != 4) ||
-		this.patrat[r][c].color != "red"
-	) {
-		r = floor(random(0, 5));
-		c = floor(random(0, 5));
-	}
+  // Check for specific conditions to determine the selected row and column
+  if (r == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+    selectedC = c;
+    selectedR = r;
+    if (c != 4) this.patrat[r][length - 1].color = "red"; // Highlight the rightmost cell in the current row
+    this.patrat[length - 1][c].color = "red"; // Highlight the bottommost cell in the current column
+    if (c != 0) this.patrat[0][0].color = "red"; // Highlight the top-left cell
+  } else if (r == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+    selectedC = c;
+    selectedR = r;
+    if (c != 4) this.patrat[4][4].color = "red"; // Highlight the bottom-right cell
+    this.patrat[0][c].color = "red"; // Highlight the topmost cell in the current column
+    if (c != 0) this.patrat[4][0].color = "red"; // Highlight the bottom-left cell
+  } else if (c == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+    selectedC = c;
+    selectedR = r;
+    if (r != 0) this.patrat[0][0].color = "red"; // Highlight the top-left cell
+    this.patrat[r][4].color = "red"; // Highlight the rightmost cell in the current row
+    if (r != 4) this.patrat[4][0].color = "red"; // Highlight the bottom-left cell
+  } else if (c == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+    selectedC = c;
+    selectedR = r;
+    if (r != 0) this.patrat[0][4].color = "red"; // Highlight the top-right cell
+    this.patrat[r][0].color = "red"; // Highlight the leftmost cell in the current row
+    if (r != 4) this.patrat[4][4].color = "red"; // Highlight the bottom-right cell
+  }
 
-	if (this.patrat[r][c].color == "red") {
-		if (r == 0 && c != 0 && c != 4) {
-			this.patrat[4][c].value = this.patrat[3][c].value;
-			this.patrat[3][c].value = this.patrat[2][c].value;
-			this.patrat[2][c].value = this.patrat[1][c].value;
-			this.patrat[1][c].value = this.patrat[0][c].value;
-		}
+  // Loop until a valid red cell is found
+  while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].color != "red") {
+    r = floor(random(0, 5)); // Generate a random row index between 0 and 4
+    c = floor(random(0, 5)); // Generate a random column index between 0 and 4
+  }
 
-		if (r == 4 && c != 0 && c != 4) {
-			this.patrat[0][c].value = this.patrat[1][c].value;
-			this.patrat[1][c].value = this.patrat[2][c].value;
-			this.patrat[2][c].value = this.patrat[3][c].value;
-			this.patrat[3][c].value = this.patrat[4][c].value;
-		}
+  // If the selected cell is red
+  if (this.patrat[r][c].color == "red") {
+    if (r == 0 && c != 0 && c != 4) {
+      this.patrat[4][c].value = this.patrat[3][c].value; // Move values down in the same column
+      this.patrat[3][c].value = this.patrat[2][c].value;
+      this.patrat[2][c].value = this.patrat[1][c].value;
+      this.patrat[1][c].value = this.patrat[0][c].value;
+    }
+    if (r == 4 && c != 0 && c != 4) {
+      this.patrat[0][c].value = this.patrat[1][c].value; // Move values up in the same column
+      this.patrat[1][c].value = this.patrat[2][c].value;
+      this.patrat[2][c].value = this.patrat[3][c].value;
+      this.patrat[3][c].value = this.patrat[4][c].value;
+    }
+    if (c == 0 && r != 0 && r != 4) {
+      this.patrat[r][4].value = this.patrat[r][3].value; // Move values to the right in the same row
+      this.patrat[r][3].value = this.patrat[r][2].value;
+      this.patrat[r][2].value = this.patrat[r][1].value;
+      this.patrat[r][1].value = this.patrat[r][0].value;
+    }
+    if (c == 4 && r != 0 && r != 4) {
+      this.patrat[r][0].value = this.patrat[r][1].value; // Move values to the left in the same row
+      this.patrat[r][1].value = this.patrat[r][2].value;
+      this.patrat[r][2].value = this.patrat[r][3].value;
+      this.patrat[r][3].value = this.patrat[r][4].value;
+    }
 
-		if (c == 0 && r != 0 && r != 4) {
-			this.patrat[r][4].value = this.patrat[r][3].value;
-			this.patrat[r][3].value = this.patrat[r][2].value;
-			this.patrat[r][2].value = this.patrat[r][1].value;
-			this.patrat[r][1].value = this.patrat[r][0].value;
-		}
+    if (r == 0 && c == 0) {
+      if (selectedR == r) {
+        for (let i = selectedC; i > 0; i--)
+          this.patrat[0][i].value = this.patrat[0][i - 1].value; // Move values to the left in the same row
+      }
+      if (selectedC == c) {
+        for (let i = selectedR; i > 0; i--)
+          this.patrat[i][0].value = this.patrat[i - 1][0].value; // Move values up in the same column
+      }
+    }
 
-		if (c == 4 && r != 0 && r != 4) {
-			this.patrat[r][0].value = this.patrat[r][1].value;
-			this.patrat[r][1].value = this.patrat[r][2].value;
-			this.patrat[r][2].value = this.patrat[r][3].value;
-			this.patrat[r][3].value = this.patrat[r][4].value;
-		}
+    // Perform similar value movements for other corner cases
 
-		if (r == 0 && c == 0) {
-			if (selectedR == r) {
-				for (let i = selectedC; i > 0; i--)
-					this.patrat[0][i].value = this.patrat[0][i - 1].value;
-			}
-			if (selectedC == c) {
-				for (let i = selectedR; i > 0; i--)
-					this.patrat[i][0].value = this.patrat[i - 1][0].value;
-			}
-		}
+    this.patrat[r][c].value = "x"; // Set the selected cell's value to "x"
+    change = "o"; // Update the value of the "change" variable
+  }
 
-		if (r == 0 && c == 4) {
-			if (selectedR == r) {
-				for (let i = selectedC; i < 4; i++)
-					this.patrat[0][i].value = this.patrat[0][i + 1].value;
-			}
-			if (selectedC == c) {
-				for (let i = selectedR; i > 0; i--)
-					this.patrat[i][4].value = this.patrat[i - 1][4].value;
-			}
-		}
-
-		if (r == 4 && c == 4) {
-			if (selectedR == r) {
-				for (let i = selectedC; i < 4; i++)
-					this.patrat[4][i].value = this.patrat[4][i + 1].value;
-			}
-			if (selectedC == c) {
-				for (let i = selectedR; i < 4; i++)
-					this.patrat[i][4].value = this.patrat[i + 1][4].value;
-			}
-		}
-		if (r == 4 && c == 0) {
-			if (selectedR == r) {
-				for (let i = selectedC; i > 0; i--)
-					this.patrat[4][i].value = this.patrat[4][i - 1].value;
-			}
-			if (selectedC == c) {
-				for (let i = selectedR; i < 4; i++)
-					this.patrat[i][0].value = this.patrat[i + 1][0].value;
-			}
-		}
-		this.patrat[r][c].value = "x";
-		change = "o";
-	}
-	for (let i = 0; i < length; i++)
-		for (let j = 0; j < length; j++)
-			if (this.patrat[i][j].color == "red") this.patrat[i][j].color = "";
+  // Reset the color of all red cells to empty
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length; j++) {
+      if (this.patrat[i][j].color == "red") {
+        this.patrat[i][j].color = "";
+      }
+    }
+  }
 }
+
 clicked(mousex, mousey) {
 	if (humanOrCopmuter == "computer" && change == "x") this.computer();
 	else {
