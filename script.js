@@ -349,7 +349,65 @@ clicked(mousex, mousey) {
 				}
 	}
 }
+winner() {
+	let count;
+	let name;
+	for (let r = 0; r < length; r++) {
+		count = 0;
+		for (let c = 1; c < length; c++) {
+			if (
+				this.patrat[r][c].value != this.patrat[r][c - 1].value ||
+				this.patrat[r][c].value == "0"
+			)
+				count++;
+			name = this.patrat[r][c].value;
+		}
 
+		if (count == 0) {
+			if (name == "o") win = player1 + " won the game ♛";
+			else win = player2 + " won the game ♛";
+			r = length;
+		}
+	}
+	if (this.patrat[0][0].value != 0)
+		if (
+			this.patrat[0][0].value == this.patrat[1][1].value &&
+			this.patrat[1][1].value == this.patrat[2][2].value &&
+			this.patrat[2][2].value == this.patrat[3][3].value &&
+			this.patrat[3][3].value == this.patrat[4][4].value
+		) {
+			if (name == "o") win = player1 + " won the game ♛";
+			else win = player2 + " won the game ♛";
+		}
+	if (
+		this.patrat[0][4].value == this.patrat[1][3].value &&
+		this.patrat[1][3].value == this.patrat[2][2].value &&
+		this.patrat[0][4].value != "0" &&
+		this.patrat[2][2].value == this.patrat[3][1].value &&
+		this.patrat[3][1].value == this.patrat[4][0].value
+	) {
+		if (name == "o") win = player1 + " won the game ♛";
+		else win = player2 + " won the game ♛";
+	}
+
+	for (let c = 0; c < length; c++) {
+		count = 0;
+		for (let r = 1; r < length; r++) {
+			if (
+				this.patrat[r - 1][c].value != this.patrat[r][c].value ||
+				this.patrat[r][c].value == "0"
+			)
+				count++;
+			name = this.patrat[r][c].value;
+		}
+
+		if (count == 0) {
+			if (name == "o") win = player1 + " won the game ♛ ";
+			else win = player2 + " won the game ♛";
+			c = length;
+		}
+	}
+}
 var patrat = new Patrat();
 var resetbt;
 let playerInput;
