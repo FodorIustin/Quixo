@@ -414,59 +414,98 @@ let playerInput;
 let playerName;
 let playerName2;
 let playerInput2;
+
 function setup() {
-	//functie care initializeaza patratul
+	
 	createCanvas(canvasWidth, canvasHeight);
 	patrat.initializare();
-	resetbt = createButton("RESET");
-	resetbt.position(550, 20);
-	resetbt.size(100, 40);
-	resetbt.mousePressed(reset);
-	resetbt.style("background-color", "lightgrey");
-
-	playerInput2 = createInput();
-	playerInput2.position(400, 500);
-
-	let adddButton = createButton("Add name");
-	adddButton.position(400, 530);
-	adddButton.mousePressed(addName2);
-
-	playerInput = createInput();
-	playerInput.position(20, 500);
-
-	let addButton = createButton("Add name");
-	addButton.position(20, 530);
-	addButton.mousePressed(addName);
-
+	humanbt = createButton("Jucator vs Jucator");
+	computerbt = createButton("Jucator vs Calculator");
+	humanbt.position(canvasWidth / 2 - 50, canvasHeight / 3);
+	computerbt.position(canvasWidth / 2 - 60, canvasHeight / 1.5);
+	humanbt.mousePressed(human);
+	computerbt.mousePressed(computer);
 }
 function mouseClicked() {
-	//functie care verifica daca butonul a fost apasat
 	patrat.clicked(mouseX, mouseY);
 }
+
+function name1() {
+	patrat.name1();
+}
+
+function name2() {
+	patrat.name2();
+}
+
 function reset() {
-	//functie care reseteaza patratul
 	patrat.reset();
-	playerName = "";
-	playerInput.value("");
-	playerName2 = "";
-	playerInput2.value("");
+	player1 = "";
+	player2 = "";
 }
-function addName() {
-	playerName = playerInput.value();
+
+function creatNameInput() {
+	name1inp = createInput("Player O");
+	name1inp.position(
+		tableWidthSide + cubeSize * 1.5,
+		tableHeightSide - cubeSize / 2
+	);
+	name1inp.size(cubeSize * 2, 10);
+	name2inp = createInput("Player X");
+	name2inp.position(
+		tableWidthSide + cubeSize * 1.5,
+		tableHeightSide + cubeSize * 5.5
+	);
+	name2inp.size(cubeSize * 2, 10);
+	name1bt = createButton("✔️");
+	name1bt.position(
+		tableWidthSide + cubeSize * 1.5 + cubeSize - 8,
+		tableHeightSide - cubeSize / 3
+	);
+	name2bt = createButton("✔️");
+	name2bt.position(
+		tableWidthSide + cubeSize * 1.5 + cubeSize - 8,
+		tableHeightSide + cubeSize * 5.23
+	);
+	name1bt.mousePressed(name1);
+	name2bt.mousePressed(name2);
+	resetbt = createButton("RESET");
+	resetbt.position(100, 25);
+	resetbt.size(90, 55);
+	resetbt.mousePressed(reset);
+	resetbt.style("background-color", "rgb(240, 168, 104)");
 }
-function addName2() {
-	playerName2 = playerInput2.value();
+
+function human() {
+	humanOrCopmuter = "human";
+	humanbt.hide();
+	computerbt.hide();
+	creatNameInput();
+}
+
+function computer() {
+	humanOrCopmuter = "computer";
+	humanbt.hide();
+	computerbt.hide();
+	creatNameInput();
 }
 function draw() {
-	//functie care deseneaza patratul
-	background("lightgreen");
-	patrat.afisare(20, 20);
+	background("brown");
+	//patrat.afisare(500,120);
+	patrat.winner();
+	//background(back);
+	if (humanOrCopmuter == "null")
+		text("Selecteaza modul de joc", canvasWidth / 2 , canvasHeight / 2);
+	if (win == "" && humanOrCopmuter != "null")
+		patrat.afisare(tableWidthSide, tableHeightSide);
+	else text(win, canvasWidth / 2 - 250, canvasHeight / 2);
+	textSize(50);
 
 	textSize(32);
-	textAlign(CENTER, CENTER);
-	text(playerName, 140, 430);
+  textAlign(CENTER, CENTER);
+  text(player1, 200, 150);
 
 	textSize(32);
-	textAlign(CENTER, CENTER);
-	text(playerName2, 550, 430);
+  textAlign(CENTER, CENTER);
+  text(player2, 1100, 150);
 }
