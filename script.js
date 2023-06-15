@@ -79,6 +79,7 @@ class Patrat {
 		for (let r = 0; r < length; r++)
 			for (let c = 0; c < length; c++) {
 				this.patrat[r][c].value = "0";
+				this.patrat[r][c].color = "rgb(237,201,175)";
 				win = "";
 			}
 	}
@@ -97,8 +98,8 @@ class Patrat {
 			c = 1;  
 		
 		while ( (r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].value == "o") {
-			r = floor(random(0, 4)); 
-			c = floor(random(0, 4));
+			r = floor(random(0, 5)); 
+			c = floor(random(0, 5));
 		}
 	
 		//conditii pentru coloane si randuri
@@ -129,8 +130,8 @@ class Patrat {
 		}
 	
 		while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].color != "red") {
-			r = floor(random(0, 4)); 
-			c = floor(random(0, 4)); 
+			r = floor(random(0, 5)); 
+			c = floor(random(0, 5)); 
 		}
 	
 		if (this.patrat[r][c].color == "red") {
