@@ -1,419 +1,416 @@
 const length = 5;
-var canvasWidth = window.innerWidth - 10;
-var canvasHeight = window.innerHeight - 10;
+computerCount = 0;
+var change = "o";
+var selectedR = 6,
+	selectedC = 6;
+var check = 6;
+var canvasWidth = window.innerWidth - 30;
+var canvasHeight = window.innerHeight -20;
 var cubeSize = canvasHeight / 8;
-
-//initializarea tablei si a patratelor
+//if (canvasWidth < canvasHeight) cubeSize = canvasWidth / 8;
+var tableHeightSide = (canvasHeight - cubeSize * 5) / 2;
+var tableWidthSide = (canvasWidth - cubeSize * 5) / 2;
+var humanOrCopmuter = "null";
 class Patrat {
-	// constructor
-	initializare(patrat) {
+	initializare(patrat = null) {
+		
 		this.patrat = [];
-		for (let r = 0; r < length; r++) {
-			//parcurgem patratul
-			this.patrat[r] = []; //initializeaza linia
-			for (let c = 0; c < length; c++) {
-				//parcurgem linia
-				let valueObj = {
-					color: "white", //initializeaza culoarea
-				};
-				this.patrat[r][c] = valueObj;
+			for (let r = 0; r < length; r++) {
+				this.patrat[r] = [];
+				for (let c = 0; c < length; c++) {
+					let valueObj = {
+						value: "0",
+
+					};
+					this.patrat[r][c] = valueObj;
+				}
 			}
-		}
+		
 	}
 
-	//partea de afisare, marigini,culori
-	afisare(xInit, y) {
-		//afiseaza patratul
-		let x = xInit;
-		
-		for (var r = 0; r < length; r++) {
-			x = xInit;
+	afisare(xInit, y) { 
+		let x = xInit; 
+		for (var r = 0; r < length; r++) { 
+			x = xInit; 
 			for (var c = 0; c < length; c++) {
-				stroke("black");
-				strokeWeight(3);
-				fill(this.patrat[r][c].color);
-				rect(x, y, cubeSize, cubeSize);
-				x += cubeSize;
-				stroke("black");
-				strokeWeight(2);
-				fill("rgb(194,178,128)");
-				if (change == "o") {
-				}
+				stroke("black"); 
+				strokeWeight(2)
 				if (this.patrat[r][c].color == "red") fill("red");
 				else fill("rgb(194,178,128)");
-				rect(x, y, cubeSize, cubeSize);
+	
+				rect(x, y, cubeSize, cubeSize); 
+	
+				
 				if (this.patrat[r][c].value == "o") {
-					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 1.4);
-					fill("rgb(194,178,128)");
-					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 1.5);
-					fill("black");
-					circle(x + cubeSize / 2, y + cubeSize / 4, cubeSize / 13);
-					fill("rgb(194,178,128)");
+					strokeWeight(3); 
+					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 1.4);  
+					fill("rgb(194,178,128)"); 
+					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 2); 
+					fill("rgb(194,178,128)"); 
+					fill("black"); 
+					circle(x + cubeSize / 2, y + cubeSize / 2, cubeSize / 3.5); 
+					fill("rgb(194,178,128)"); 
 				}
+	
 				if (this.patrat[r][c].value == "x") {
-					strokeWeight(3);
+					strokeWeight(3); 
 					line(
 						x + cubeSize / 6,
 						y + cubeSize / 6,
 						x + cubeSize / 1.15,
 						y + cubeSize / 1.2
-					);
+					); 
 					line(
 						x + cubeSize / 15,
 						y + cubeSize / 1.2,
 						x + cubeSize / 1.15,
 						y + cubeSize / 6
-					);
-
+					); 
 				}
-				x += cubeSize;
+	
+			x += cubeSize; 
 			}
-			y += cubeSize;
+			y += cubeSize; 
 		}
 	}
-	}
+	
+
 	reset() {
-		//reseteaza patratul
 		for (let r = 0; r < length; r++)
 			for (let c = 0; c < length; c++) {
-				this.patrat[r][c].color = "white";
-				this.patrat[r][c].value = "";
+				this.patrat[r][c].value = "0";
+				win = "";
 			}
 	}
-	clicked(my, mx) {
-		//verifica daca am dat click pe patrat
-		for (let r = 0; r < length; r++)
-			for (let c = 0; c < length; c++)
-				if (
-					mx >= 20 + cubeSize * r &&
-					mx <= 20 + cubeSize + cubeSize * r &&
-					my >= 20 + cubeSize * c &&
-					my <= 20 + cubeSize + cubeSize * c
-				)
-					this.patrat[r][c].color = "green";
+	name1() {
+		player1 = name1inp.value();
+		name1bt.hide();
+		name1inp.hide();
 	}
-computer() {
-  let r = 1, // Initialize row variable
-    c = 1; // Initialize column variable
-
-  // Loop until a valid position is found
-  while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].value == "o") {
-    r = floor(random(0, 5)); // Generate a random row index between 0 and 4
-    c = floor(random(0, 5)); // Generate a random column index between 0 and 4
-  }
-
-  // Check for specific conditions to determine the selected row and column
-  if (r == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
-    selectedC = c;
-    selectedR = r;
-    if (c != 4) this.patrat[r][length - 1].color = "red"; // Highlight the rightmost cell in the current row
-    this.patrat[length - 1][c].color = "red"; // Highlight the bottommost cell in the current column
-    if (c != 0) this.patrat[0][0].color = "red"; // Highlight the top-left cell
-  } else if (r == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
-    selectedC = c;
-    selectedR = r;
-    if (c != 4) this.patrat[4][4].color = "red"; // Highlight the bottom-right cell
-    this.patrat[0][c].color = "red"; // Highlight the topmost cell in the current column
-    if (c != 0) this.patrat[4][0].color = "red"; // Highlight the bottom-left cell
-  } else if (c == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
-    selectedC = c;
-    selectedR = r;
-    if (r != 0) this.patrat[0][0].color = "red"; // Highlight the top-left cell
-    this.patrat[r][4].color = "red"; // Highlight the rightmost cell in the current row
-    if (r != 4) this.patrat[4][0].color = "red"; // Highlight the bottom-left cell
-  } else if (c == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
-    selectedC = c;
-    selectedR = r;
-    if (r != 0) this.patrat[0][4].color = "red"; // Highlight the top-right cell
-    this.patrat[r][0].color = "red"; // Highlight the leftmost cell in the current row
-    if (r != 4) this.patrat[4][4].color = "red"; // Highlight the bottom-right cell
-  }
-
-  // Loop until a valid red cell is found
-  while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].color != "red") {
-    r = floor(random(0, 5)); // Generate a random row index between 0 and 4
-    c = floor(random(0, 5)); // Generate a random column index between 0 and 4
-  }
-
-  // If the selected cell is red
-  if (this.patrat[r][c].color == "red") {
-    if (r == 0 && c != 0 && c != 4) {
-      this.patrat[4][c].value = this.patrat[3][c].value; // Move values down in the same column
-      this.patrat[3][c].value = this.patrat[2][c].value;
-      this.patrat[2][c].value = this.patrat[1][c].value;
-      this.patrat[1][c].value = this.patrat[0][c].value;
-    }
-    if (r == 4 && c != 0 && c != 4) {
-      this.patrat[0][c].value = this.patrat[1][c].value; // Move values up in the same column
-      this.patrat[1][c].value = this.patrat[2][c].value;
-      this.patrat[2][c].value = this.patrat[3][c].value;
-      this.patrat[3][c].value = this.patrat[4][c].value;
-    }
-    if (c == 0 && r != 0 && r != 4) {
-      this.patrat[r][4].value = this.patrat[r][3].value; // Move values to the right in the same row
-      this.patrat[r][3].value = this.patrat[r][2].value;
-      this.patrat[r][2].value = this.patrat[r][1].value;
-      this.patrat[r][1].value = this.patrat[r][0].value;
-    }
-    if (c == 4 && r != 0 && r != 4) {
-      this.patrat[r][0].value = this.patrat[r][1].value; // Move values to the left in the same row
-      this.patrat[r][1].value = this.patrat[r][2].value;
-      this.patrat[r][2].value = this.patrat[r][3].value;
-      this.patrat[r][3].value = this.patrat[r][4].value;
-    }
-
-    if (r == 0 && c == 0) {
-      if (selectedR == r) {
-        for (let i = selectedC; i > 0; i--)
-          this.patrat[0][i].value = this.patrat[0][i - 1].value; // Move values to the left in the same row
-      }
-      if (selectedC == c) {
-        for (let i = selectedR; i > 0; i--)
-          this.patrat[i][0].value = this.patrat[i - 1][0].value; // Move values up in the same column
-      }
-    }
-
-    // Perform similar value movements for other corner cases
-
-    this.patrat[r][c].value = "x"; // Set the selected cell's value to "x"
-    change = "o"; // Update the value of the "change" variable
-  }
-
-  // Reset the color of all red cells to empty
-  for (let i = 0; i < length; i++) {
-    for (let j = 0; j < length; j++) {
-      if (this.patrat[i][j].color == "red") {
-        this.patrat[i][j].color = "";
-      }
-    }
-  }
-}
-
-clicked(mousex, mousey) {
-	if (humanOrCopmuter == "computer" && change == "x") this.computer();
-	else {
-		for (let r = 0; r < length; r++)
-			for (let c = 0; c < length; c++)
-				if (
-					mousey >= tableHeightSide + cubeSize * r &&
-					mousey <= tableHeightSide + cubeSize + cubeSize * r &&
-					mousex >= tableWidthSide + cubeSize * c &&
-					mousex <= tableWidthSide + cubeSize + cubeSize * c &&
-					(c < 1 || c > length - 2 || r == 0 || r == length - 1)
-				) {
-					if (this.patrat[r][c].color != "red") {
-						if (check != 6) this.patrat[selectedR][selectedC].value = change;
-						for (let i = 0; i < length; i++)
-							for (let j = 0; j < length; j++)
-								if (this.patrat[i][j].color == "red")
-									this.patrat[i][j].color = "";
-					}
-
-					if (this.patrat[r][c].color == "red") {
-						for (let i = 0; i < length; i++)
-							for (let j = 0; j < length; j++)
-								if (this.patrat[i][j].color == "red")
-									this.patrat[i][j].color = "";
-
-						if (r == 0 && c != 0 && c != 4) {
-							this.patrat[4][c].value = this.patrat[3][c].value;
-							this.patrat[3][c].value = this.patrat[2][c].value;
-							this.patrat[2][c].value = this.patrat[1][c].value;
-							this.patrat[1][c].value = this.patrat[0][c].value;
-						}
-
-						if (r == 4 && c != 0 && c != 4) {
-							this.patrat[0][c].value = this.patrat[1][c].value;
-							this.patrat[1][c].value = this.patrat[2][c].value;
-							this.patrat[2][c].value = this.patrat[3][c].value;
-							this.patrat[3][c].value = this.patrat[4][c].value;
-						}
-
-						if (c == 0 && r != 0 && r != 4) {
-							this.patrat[r][4].value = this.patrat[r][3].value;
-							this.patrat[r][3].value = this.patrat[r][2].value;
-							this.patrat[r][2].value = this.patrat[r][1].value;
-							this.patrat[r][1].value = this.patrat[r][0].value;
-						}
-
-						if (c == 4 && r != 0 && r != 4) {
-							this.patrat[r][0].value = this.patrat[r][1].value;
-							this.patrat[r][1].value = this.patrat[r][2].value;
-							this.patrat[r][2].value = this.patrat[r][3].value;
-							this.patrat[r][3].value = this.patrat[r][4].value;
-						}
-
-						if (r == 0 && c == 0) {
-							if (selectedR == r) {
-								for (let i = selectedC; i > 0; i--)
-									this.patrat[0][i].value = this.patrat[0][i - 1].value;
-							}
-							if (selectedC == c) {
-								for (let i = selectedR; i > 0; i--)
-									this.patrat[i][0].value = this.patrat[i - 1][0].value;
-							}
-						}
-
-						if (r == 0 && c == 4) {
-							if (selectedR == r) {
-								for (let i = selectedC; i < 4; i++)
-									this.patrat[0][i].value = this.patrat[0][i + 1].value;
-							}
-							if (selectedC == c) {
-								for (let i = selectedR; i > 0; i--)
-									this.patrat[i][4].value = this.patrat[i - 1][4].value;
-							}
-						}
-
-						if (r == 4 && c == 4) {
-							if (selectedR == r) {
-								for (let i = selectedC; i < 4; i++)
-									this.patrat[4][i].value = this.patrat[4][i + 1].value;
-							}
-							if (selectedC == c) {
-								for (let i = selectedR; i < 4; i++)
-									this.patrat[i][4].value = this.patrat[i + 1][4].value;
-							}
-						}
-						if (r == 4 && c == 0) {
-							if (selectedR == r) {
-								for (let i = selectedC; i > 0; i--)
-									this.patrat[4][i].value = this.patrat[4][i - 1].value;
-							}
-							if (selectedC == c) {
-								for (let i = selectedR; i < 4; i++)
-									this.patrat[i][0].value = this.patrat[i + 1][0].value;
-							}
-						}
-						this.patrat[r][c].value = change;
-						check = 6;
-						if (change == "o") change = "x";
-						else change = "o";
-					} else if (
-						r == 0 &&
-						(this.patrat[r][c].value == "0" ||
-							this.patrat[r][c].value == change)
-					) {
-						if (this.patrat[r][c].value == change) {
-							this.patrat[r][c].value = "0";
-							check = 1;
-						}
-						selectedC = c;
-						selectedR = r;
-						if (c != 4) this.patrat[r][length - 1].color = "red";
-						this.patrat[length - 1][c].color = "red";
-						if (c != 0) this.patrat[0][0].color = "red";
-					} else if (
-						r == 4 &&
-						(this.patrat[r][c].value == "0" ||
-							this.patrat[r][c].value == change)
-					) {
-						if (this.patrat[r][c].value == change) {
-							this.patrat[r][c].value = "0";
-							check = 1;
-						}
-						selectedC = c;
-						selectedR = r;
-						if (c != 4) this.patrat[4][4].color = "red";
-						this.patrat[0][c].color = "red";
-						if (c != 0) this.patrat[4][0].color = "red";
-					} else if (
-						c == 0 &&
-						(this.patrat[r][c].value == "0" ||
-							this.patrat[r][c].value == change)
-					) {
-						if (this.patrat[r][c].value == change) {
-							this.patrat[r][c].value = "0";
-							check = 1;
-						}
-						selectedC = c;
-						selectedR = r;
-						if (r != 0) this.patrat[0][0].color = "red";
-						this.patrat[r][4].color = "red";
-						if (r != 4) this.patrat[4][0].color = "red";
-					} else if (
-						c == 4 &&
-						(this.patrat[r][c].value == "0" ||
-							this.patrat[r][c].value == change)
-					) {
-						if (this.patrat[r][c].value == change) {
-							this.patrat[r][c].value = "0";
-							check = 1;
-						}
-						selectedC = c;
-						selectedR = r;
-						if (r != 0) this.patrat[0][4].color = "red";
-						this.patrat[r][0].color = "red";
-						if (r != 4) this.patrat[4][4].color = "red";
-					}
+	name2() {
+		player2 = name2inp.value();
+		name2bt.hide();
+		name2inp.hide();
+	}
+	computer() {
+		let r = 1, 
+			c = 1;  
+		
+		while ( (r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].value == "o") {
+			r = floor(random(0, 4)); 
+			c = floor(random(0, 4));
+		}
+	
+		//conditii pentru coloane si randuri
+		if (r == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+			selectedC = c;
+			selectedR = r;
+			if (c != 4) this.patrat[r][length - 1].color = "red"; // cel mai din dreapta patrat
+			this.patrat[length - 1][c].color = "red"; // cel mai din jos patrat
+			if (c != 0) this.patrat[0][0].color = "red"; // cea mai din stanga sus
+		} else if (r == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+			selectedC = c;
+			selectedR = r;
+			if (c != 4) this.patrat[4][4].color = "red"; // cel mai din drapta jos
+			this.patrat[0][c].color = "red"; // cea mai de sus
+			if (c != 0) this.patrat[4][0].color = "red"; // cea mai din stanga sus
+		} else if (c == 0 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+			selectedC = c;
+			selectedR = r;
+			if (r != 0) this.patrat[0][0].color = "red"; // cea mai din stanga 
+			this.patrat[r][4].color = "red"; // cea mai din dreapta
+			if (r != 4) this.patrat[4][0].color = "red"; // cea mai din stanga
+		} else if (c == 4 && (this.patrat[r][c].value == "0" || this.patrat[r][c].value == change)) {
+			selectedC = c;
+			selectedR = r;
+			if (r != 0) this.patrat[0][4].color = "red"; // cea mai din dreapta sus
+			this.patrat[r][0].color = "red"; // cea mai din stanga
+			if (r != 4) this.patrat[4][4].color = "red"; // cea mai din drepata jos
+		}
+	
+		while ((r != 0 && r != 4 && c != 0 && c != 4) || this.patrat[r][c].color != "red") {
+			r = floor(random(0, 4)); 
+			c = floor(random(0, 4)); 
+		}
+	
+		if (this.patrat[r][c].color == "red") {
+			if (r == 0 && c != 0 && c != 4) {
+				this.patrat[4][c].value = this.patrat[3][c].value; // scad valorile pe aceeasi coloana
+				this.patrat[3][c].value = this.patrat[2][c].value;
+				this.patrat[2][c].value = this.patrat[1][c].value;
+				this.patrat[1][c].value = this.patrat[0][c].value;
+			}
+			if (r == 4 && c != 0 && c != 4) {
+				this.patrat[0][c].value = this.patrat[1][c].value; // urca valorile pe aceeasi coloana
+				this.patrat[1][c].value = this.patrat[2][c].value;
+				this.patrat[2][c].value = this.patrat[3][c].value;
+				this.patrat[3][c].value = this.patrat[4][c].value;
+			}
+			if (c == 0 && r != 0 && r != 4) {
+				this.patrat[r][4].value = this.patrat[r][3].value; // cresc pe dreapta pe acelasi rand
+				this.patrat[r][3].value = this.patrat[r][2].value;
+				this.patrat[r][2].value = this.patrat[r][1].value;
+				this.patrat[r][1].value = this.patrat[r][0].value;
+			}
+			if (c == 4 && r != 0 && r != 4) {
+				this.patrat[r][0].value = this.patrat[r][1].value; // cresc pe stanga pe acelasi rand
+				this.patrat[r][1].value = this.patrat[r][2].value;
+				this.patrat[r][2].value = this.patrat[r][3].value;
+				this.patrat[r][3].value = this.patrat[r][4].value;
+			}
+	
+			if (r == 0 && c == 0) {
+				if (selectedR == r) {
+					for (let i = selectedC; i > 0; i--)
+						this.patrat[0][i].value = this.patrat[0][i - 1].value; //stanga pe acelasi rand
 				}
-	}
-}
-winner() {
-	let count;
-	let name;
-	for (let r = 0; r < length; r++) {
-		count = 0;
-		for (let c = 1; c < length; c++) {
-			if (
-				this.patrat[r][c].value != this.patrat[r][c - 1].value ||
-				this.patrat[r][c].value == "0"
-			)
-				count++;
-			name = this.patrat[r][c].value;
+				if (selectedC == c) {
+					for (let i = selectedR; i > 0; i--)
+						this.patrat[i][0].value = this.patrat[i - 1][0].value; // sus pe aceeasi coloana
+				}
+			}
+	
+			this.patrat[r][c].value = "x"; 
+			change = "o"; 
 		}
+		for (let i = 0; i < length; i++) {
+			for (let j = 0; j < length; j++) {
+				if (this.patrat[i][j].color == "red") {
+					this.patrat[i][j].color = "";
+				}
+			}
+		}
+	}
+	
+	clicked(mousex, mousey) {
+		if (humanOrCopmuter == "computer" && change == "x") this.computer();
+		else {
+			for (let r = 0; r < length; r++)
+				for (let c = 0; c < length; c++)
+					if (
+						mousey >= tableHeightSide + cubeSize * r &&
+						mousey <= tableHeightSide + cubeSize + cubeSize * r &&
+						mousex >= tableWidthSide + cubeSize * c &&
+						mousex <= tableWidthSide + cubeSize + cubeSize * c &&
+						(c < 1 || c > length - 2 || r == 0 || r == length - 1)
+					) {
+						if (this.patrat[r][c].color != "red") {
+							if (check != 6) this.patrat[selectedR][selectedC].value = change;
+							for (let i = 0; i < length; i++)
+								for (let j = 0; j < length; j++)
+									if (this.patrat[i][j].color == "red")
+										this.patrat[i][j].color = "";
+						}
 
-		if (count == 0) {
-			if (name == "o") win = player1 + " won the game ♛";
-			else win = player2 + " won the game ♛";
-			r = length;
+						if (this.patrat[r][c].color == "red") {
+							for (let i = 0; i < length; i++)
+								for (let j = 0; j < length; j++)
+									if (this.patrat[i][j].color == "red")
+										this.patrat[i][j].color = "";
+
+							if (r == 0 && c != 0 && c != 4) {
+								this.patrat[4][c].value = this.patrat[3][c].value;
+								this.patrat[3][c].value = this.patrat[2][c].value;
+								this.patrat[2][c].value = this.patrat[1][c].value;
+								this.patrat[1][c].value = this.patrat[0][c].value;
+							}
+
+							if (r == 4 && c != 0 && c != 4) {
+								this.patrat[0][c].value = this.patrat[1][c].value;
+								this.patrat[1][c].value = this.patrat[2][c].value;
+								this.patrat[2][c].value = this.patrat[3][c].value;
+								this.patrat[3][c].value = this.patrat[4][c].value;
+							}
+
+							if (c == 0 && r != 0 && r != 4) {
+								this.patrat[r][4].value = this.patrat[r][3].value;
+								this.patrat[r][3].value = this.patrat[r][2].value;
+								this.patrat[r][2].value = this.patrat[r][1].value;
+								this.patrat[r][1].value = this.patrat[r][0].value;
+							}
+
+							if (c == 4 && r != 0 && r != 4) {
+								this.patrat[r][0].value = this.patrat[r][1].value;
+								this.patrat[r][1].value = this.patrat[r][2].value;
+								this.patrat[r][2].value = this.patrat[r][3].value;
+								this.patrat[r][3].value = this.patrat[r][4].value;
+							}
+
+							if (r == 0 && c == 0) {
+								if (selectedR == r) {
+									for (let i = selectedC; i > 0; i--)
+										this.patrat[0][i].value = this.patrat[0][i - 1].value;
+								}
+								if (selectedC == c) {
+									for (let i = selectedR; i > 0; i--)
+										this.patrat[i][0].value = this.patrat[i - 1][0].value;
+								}
+							}
+
+							if (r == 0 && c == 4) {
+								if (selectedR == r) {
+									for (let i = selectedC; i < 4; i++)
+										this.patrat[0][i].value = this.patrat[0][i + 1].value;
+								}
+								if (selectedC == c) {
+									for (let i = selectedR; i > 0; i--)
+										this.patrat[i][4].value = this.patrat[i - 1][4].value;
+								}
+							}
+
+							if (r == 4 && c == 4) {
+								if (selectedR == r) {
+									for (let i = selectedC; i < 4; i++)
+										this.patrat[4][i].value = this.patrat[4][i + 1].value;
+								}
+								if (selectedC == c) {
+									for (let i = selectedR; i < 4; i++)
+										this.patrat[i][4].value = this.patrat[i + 1][4].value;
+								}
+							}
+							if (r == 4 && c == 0) {
+								if (selectedR == r) {
+									for (let i = selectedC; i > 0; i--)
+										this.patrat[4][i].value = this.patrat[4][i - 1].value;
+								}
+								if (selectedC == c) {
+									for (let i = selectedR; i < 4; i++)
+										this.patrat[i][0].value = this.patrat[i + 1][0].value;
+								}
+							}
+							this.patrat[r][c].value = change;
+							check = 6;
+							if (change == "o") change = "x";
+							else change = "o";
+						} else if (
+							r == 0 &&
+							(this.patrat[r][c].value == "0" ||
+								this.patrat[r][c].value == change)
+						) {
+							if (this.patrat[r][c].value == change) {
+								this.patrat[r][c].value = "0";
+								check = 1;
+							}
+							selectedC = c;
+							selectedR = r;
+							if (c != 4) this.patrat[r][length - 1].color = "red";
+							this.patrat[length - 1][c].color = "red";
+							if (c != 0) this.patrat[0][0].color = "red";
+						} else if (
+							r == 4 &&
+							(this.patrat[r][c].value == "0" ||
+								this.patrat[r][c].value == change)
+						) {
+							if (this.patrat[r][c].value == change) {
+								this.patrat[r][c].value = "0";
+								check = 1;
+							}
+							selectedC = c;
+							selectedR = r;
+							if (c != 4) this.patrat[4][4].color = "red";
+							this.patrat[0][c].color = "red";
+							if (c != 0) this.patrat[4][0].color = "red";
+						} else if (
+							c == 0 &&
+							(this.patrat[r][c].value == "0" ||
+								this.patrat[r][c].value == change)
+						) {
+							if (this.patrat[r][c].value == change) {
+								this.patrat[r][c].value = "0";
+								check = 1;
+							}
+							selectedC = c;
+							selectedR = r;
+							if (r != 0) this.patrat[0][0].color = "red";
+							this.patrat[r][4].color = "red";
+							if (r != 4) this.patrat[4][0].color = "red";
+						} else if (
+							c == 4 &&
+							(this.patrat[r][c].value == "0" ||
+								this.patrat[r][c].value == change)
+						) {
+							if (this.patrat[r][c].value == change) {
+								this.patrat[r][c].value = "0";
+								check = 1;
+							}
+							selectedC = c;
+							selectedR = r;
+							if (r != 0) this.patrat[0][4].color = "red";
+							this.patrat[r][0].color = "red";
+							if (r != 4) this.patrat[4][4].color = "red";
+						}
+					}
 		}
 	}
-	if (this.patrat[0][0].value != 0)
+	winner() {
+		let count;
+		let name;
+		for (let r = 0; r < length; r++) {
+			count = 0;
+			for (let c = 1; c < length; c++) {
+				if (
+					this.patrat[r][c].value != this.patrat[r][c - 1].value ||
+					this.patrat[r][c].value == "0"
+				)
+					count++;
+				name = this.patrat[r][c].value;
+			}
+
+			if (count == 0) {
+				if (name == "o") win = player1 + " won the game ♛";
+				else win = player2 + " won the game ♛";
+				r = length;
+			}
+		}
+		if (this.patrat[0][0].value != 0)
+			if (
+				this.patrat[0][0].value == this.patrat[1][1].value &&
+				this.patrat[1][1].value == this.patrat[2][2].value &&
+				this.patrat[2][2].value == this.patrat[3][3].value &&
+				this.patrat[3][3].value == this.patrat[4][4].value
+			) {
+				if (name == "o") win = player1 + " won the game ♛";
+				else win = player2 + " won the game ♛";
+			}
 		if (
-			this.patrat[0][0].value == this.patrat[1][1].value &&
-			this.patrat[1][1].value == this.patrat[2][2].value &&
-			this.patrat[2][2].value == this.patrat[3][3].value &&
-			this.patrat[3][3].value == this.patrat[4][4].value
+			this.patrat[0][4].value == this.patrat[1][3].value &&
+			this.patrat[1][3].value == this.patrat[2][2].value &&
+			this.patrat[0][4].value != "0" &&
+			this.patrat[2][2].value == this.patrat[3][1].value &&
+			this.patrat[3][1].value == this.patrat[4][0].value
 		) {
 			if (name == "o") win = player1 + " won the game ♛";
 			else win = player2 + " won the game ♛";
 		}
-	if (
-		this.patrat[0][4].value == this.patrat[1][3].value &&
-		this.patrat[1][3].value == this.patrat[2][2].value &&
-		this.patrat[0][4].value != "0" &&
-		this.patrat[2][2].value == this.patrat[3][1].value &&
-		this.patrat[3][1].value == this.patrat[4][0].value
-	) {
-		if (name == "o") win = player1 + " won the game ♛";
-		else win = player2 + " won the game ♛";
-	}
 
-	for (let c = 0; c < length; c++) {
-		count = 0;
-		for (let r = 1; r < length; r++) {
-			if (
-				this.patrat[r - 1][c].value != this.patrat[r][c].value ||
-				this.patrat[r][c].value == "0"
-			)
-				count++;
-			name = this.patrat[r][c].value;
-		}
+		for (let c = 0; c < length; c++) {
+			count = 0;
+			for (let r = 1; r < length; r++) {
+				if (
+					this.patrat[r - 1][c].value != this.patrat[r][c].value ||
+					this.patrat[r][c].value == "0"
+				)
+					count++;
+				name = this.patrat[r][c].value;
+			}
 
-		if (count == 0) {
-			if (name == "o") win = player1 + " won the game ♛ ";
-			else win = player2 + " won the game ♛";
-			c = length;
+			if (count == 0) {
+				if (name == "o") win = player1 + " won the game ♛ ";
+				else win = player2 + " won the game ♛";
+				c = length;
+			}
 		}
 	}
 }
 var patrat = new Patrat();
 var resetbt;
-let playerInput;
-let playerName;
-let playerName2;
-let playerInput2;
+var back;
+var name1bt, name2bt;
+var name1inp, name2inp;
+var humanbt, computerbt;
+
+var player1 = "", player2 = "";
+var win = "";
 
 function setup() {
 	
@@ -509,3 +506,7 @@ function draw() {
   textAlign(CENTER, CENTER);
   text(player2, 1100, 150);
 }
+
+
+
+
